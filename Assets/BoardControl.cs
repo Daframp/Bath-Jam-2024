@@ -85,11 +85,7 @@ public class BoardControl : MonoBehaviour
 
     private void Stage1()
     {
-        time += Time.deltaTime;
-        while (time >= interval)
-        {
             SetTileMap();
-        }
     }
     private void Stage2()
     {
@@ -112,11 +108,7 @@ public class BoardControl : MonoBehaviour
     }
     private void Stage3()
     {
-        time += Time.deltaTime;
-        while (time >= interval)
-        {
             SetTileMap();
-        }
     }
     private void Stage4()
     {
