@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class BoardControl : MonoBehaviour
 {
@@ -22,6 +24,10 @@ public class BoardControl : MonoBehaviour
     private Color[] CurrentColors;
     private List<Color> TempColors = new List<Color>();
 
+    private TextMeshProUGUI[] Texts;
+    private string[] WeaponAttachs = new string[] { "Bayonet", "Shotgun", "Piercing", "Sniper"};
+    private string[] Others = new string[] {"Exploding Barrels", "Random Walls", "Spiked Armour", "Increased Board", "Hat", "Veto Colour" };
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +35,14 @@ public class BoardControl : MonoBehaviour
         CurrentColors = new Color[] { Color.white, Color.black };
         TempColors = new List<Color>();
         Counter = 0;
-        GameState = 1;
+        GameState = 0;
+        //NextStage(); // remove this when we have the main game loop and put it in the main loop
         interval = 5f;
         resetColorList();
         tilemaps = GetComponentsInChildren<Tilemap>();
+        Texts = GetComponentsInChildren<TextMeshProUGUI>();
         SetTileMap();
+        IncreaseSize();
     }
 
     private void resetColorList()
@@ -85,7 +94,7 @@ public class BoardControl : MonoBehaviour
 
     private void Stage1()
     {
-            SetTileMap();
+        SetTileMap();
     }
     private void Stage2()
     {
@@ -108,7 +117,7 @@ public class BoardControl : MonoBehaviour
     }
     private void Stage3()
     {
-            SetTileMap();
+        SetTileMap();
     }
     private void Stage4()
     {
@@ -155,13 +164,18 @@ public class BoardControl : MonoBehaviour
         {
             GameState++;
         }
+        NextRound();
+    }
+
+    public void NextRound()
+    {
         resetColorList();
         TempColors = new List<Color>();
         
         if (GameState == 1)
         {
             CurrentColors[0] = GetColor();
-            CurrentColors[1] = Color.black;
+            CurrentColors[1] = Color.white;
         }
         if (GameState == 2)
         {
@@ -236,5 +250,71 @@ public class BoardControl : MonoBehaviour
     public Color[] CurrentColours()
     {
         return CurrentColors;
+    }
+
+    public void Shop()
+    {
+        int xm = tilemaps[0].cellBounds.xMin;
+        int xM = tilemaps[0].cellBounds.xMax;
+        SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), 2), tilemaps[0]);
+        SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), 0), tilemaps[0]);
+        SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), -2), tilemaps[0]);
+        int rnd = Random.Range(0, WeaponAttachs.Length);
+        Texts[1].text = WeaponAttachs[rnd];
+        rnd = Random.Range(0, Others.Length);
+        Texts[2].text = Others[rnd];
+    }
+
+    public void DecreaseSize()
+    {
+        foreach (var tilemap in tilemaps)
+        {
+            RemoveTiles(tilemap);
+        }
+    }
+    private void RemoveTiles(Tilemap t)
+    {
+        int xm = t.cellBounds.xMin;
+        int xM = t.cellBounds.xMax;
+        int ym = t.cellBounds.yMin;
+        int yM = t.cellBounds.yMax;
+        for (int i = xm; i < xM ; i++)
+        {
+            t.SetTile(new Vector3Int(i, ym), null);
+            t.SetTile(new Vector3Int(i, yM-1), null);
+        }
+
+        for (int i = ym; i < yM; i++)
+        {
+            t.SetTile(new Vector3Int(xm, i), null);
+            t.SetTile(new Vector3Int(xM-1, i), null);
+        }
+    }
+    public void IncreaseSize()
+    {
+        for(int i = 0; i< tilemaps.Length;i++)
+        {
+            AddTiles(tilemaps[i],i);
+        }
+    }
+    private void AddTiles(Tilemap t,int increment)
+    {
+        int xm = t.cellBounds.xMin;
+        int xM = t.cellBounds.xMax;
+        int ym = t.cellBounds.yMin;
+        int yM = t.cellBounds.yMax;
+        for (int i = xm+increment; i < xM; i++)
+        {
+            t.SetTile(new Vector3Int(i, ym+1), new Tile());
+            t.SetTile(new Vector3Int(i, yM), new Tile());
+            i++;
+        }
+
+        for (int i = ym+increment; i < yM; i++)
+        {
+            t.SetTile(new Vector3Int(xm+1, i), new Tile());
+            t.SetTile(new Vector3Int(xM, i), new Tile());
+            i++;
+        }
     }
 }
