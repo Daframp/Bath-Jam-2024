@@ -42,7 +42,6 @@ public class BoardControl : MonoBehaviour
         tilemaps = GetComponentsInChildren<Tilemap>();
         Texts = GetComponentsInChildren<TextMeshProUGUI>();
         SetTileMap();
-        IncreaseSize();
     }
 
     private void resetColorList()
