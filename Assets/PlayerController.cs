@@ -7,13 +7,17 @@ public class PlayerController : MonoBehaviour
     private int health = 3;
     private float friction = 1f;
     private float shotCooldown = 0.5f;
+    private float shotDamage = 1f;
     private bool reloading = false;
     private float recoilStrength = 5f;
     private Rigidbody2D rb;
     public GameObject bulletPrefab;
     public Transform firePoint;
-    public float bulletSpeed;
+    private float bulletSpeed = 10f;
     private bool piercing = false;
+    private bool shotgun = false;
+    private bool sniper = false;
+
 
 
     // Start is called before the first frame update
@@ -24,6 +28,8 @@ public class PlayerController : MonoBehaviour
             rb = GetComponent<Rigidbody2D>();
         }
         ChangeDrag();
+        GetShotgun();
+        GetSniper();
     }
 
 
@@ -54,17 +60,26 @@ public class PlayerController : MonoBehaviour
         if (!reloading){
             StartCoroutine(Reload());
             ApplyRecoil();
-
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            if (rb != null){
-                Vector2 direction = (firePoint.position - transform.position).normalized;
-                rb.velocity = direction * bulletSpeed;
-            }
-            bullet.SetPiercing(piercing);
+            FireBullet(0);
+            if (shotgun == true){
+                FireBullet(-45);
+                FireBullet(45);  
+            }          
         }
     }
 
+    void FireBullet(float angleOffset)
+    {
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        if (rb != null){
+            Vector2 direction = (firePoint.position - transform.position).normalized;
+            Vector2 rotatedDirection = Quaternion.Euler(0, 0, angleOffset) * direction;
+            rb.velocity = rotatedDirection * bulletSpeed;
+            
+        }
+        bullet.GetComponent<BulletController>().SetPiercing(piercing);
+    }
     void ApplyRecoil()
     {
          // Get the player's current rotation in degrees (Z axis)
@@ -121,8 +136,23 @@ public class PlayerController : MonoBehaviour
         rb.drag = friction;
     }
 
-    private void SetPiercing(bool value)
+    public void SetPiercing(bool value)
     {
-        piercing = value
+        piercing = value;
+    }
+
+    public void GetSniper()
+    {
+        shotCooldown *= 2;
+        shotDamage *= 2;
+        recoilStrength = System.Math.Min(recoilStrength * 1.5f, 8);
+        bulletSpeed *= 2;
+    }
+
+    public void GetShotgun()
+    {
+        shotgun = true;
+        shotCooldown *= 1.5f;
+        recoilStrength = System.Math.Min(recoilStrength * 1.5f, 8);
     }
 }

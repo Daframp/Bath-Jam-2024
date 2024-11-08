@@ -100,8 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271daa59640a6844982f2cc9bade6244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
+  bulletPrefab: {fileID: 3343516696173141959, guid: ce6b7b35d933d064286a8ac5a141651b, type: 3}
+  firePoint: {fileID: 4371316343652857153}
   bulletSpeed: 10
 --- !u!50 &8094529277179557540
 Rigidbody2D:
