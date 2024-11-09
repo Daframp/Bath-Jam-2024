@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -15,6 +16,8 @@ public class BoardControl : MonoBehaviour
     private float time;
 
     private Tilemap[] tilemaps;
+    private TileBase Set1;
+    private TileBase Set2;
     private List<Vector3> availablePlaces;
     private List<Vector3Int> availablePlaces2;
 
@@ -24,9 +27,8 @@ public class BoardControl : MonoBehaviour
     private Color[] CurrentColors;
     private List<Color> TempColors = new List<Color>();
 
-    private TextMeshProUGUI[] Texts;
-    private string[] WeaponAttachs = new string[] { "Bayonet", "Shotgun", "Piercing", "Sniper"};
-    private string[] Others = new string[] {"Exploding Barrels", "Random Walls", "Spiked Armour", "Increased Board", "Hat", "Veto Colour" };
+    private string[] WeaponAttachs = new string[] { "Sword", "Shotgun", "Piercing", "Sniper"};
+    private string[] Others = new string[] {"Explosives", "Wall", "Spiked Armour", "BoardExpansion", "Tophat", "VetoBlue", "VetoGreen", "VetoYellow", "VetoRed" };
 
 
     // Start is called before the first frame update
@@ -34,14 +36,17 @@ public class BoardControl : MonoBehaviour
     {
         CurrentColors = new Color[] { Color.white, Color.black };
         TempColors = new List<Color>();
-        Counter = 0;
+        Counter = 0;    
         GameState = 0;
         //NextStage(); // remove this when we have the main game loop and put it in the main loop
         interval = 5f;
         resetColorList();
         tilemaps = GetComponentsInChildren<Tilemap>();
-        Texts = GetComponentsInChildren<TextMeshProUGUI>();
+        Set1 = tilemaps[0].GetTile(new Vector3Int(0,0,0));
+        Set2 = tilemaps[1].GetTile(new Vector3Int(1, 0, 0));
         SetTileMap();
+        IncreaseSize(); 
+        DecreaseSize();
     }
 
     private void resetColorList()
@@ -258,10 +263,44 @@ public class BoardControl : MonoBehaviour
         SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), 2), tilemaps[0]);
         SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), 0), tilemaps[0]);
         SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), -2), tilemaps[0]);
+        CreateSprite("Shop1","Heart", new Vector3((float) (xm + ((xM - xm) / 2) + 2.25), (float)2.75));
         int rnd = Random.Range(0, WeaponAttachs.Length);
-        Texts[1].text = WeaponAttachs[rnd];
+        CreateSprite("Shop2", WeaponAttachs[rnd], new Vector3((float)(xm + ((xM - xm) / 2) + 2.25), (float)0.50));
         rnd = Random.Range(0, Others.Length);
-        Texts[2].text = Others[rnd];
+        CreateSprite("Shop3", Others[rnd], new Vector3((float)(xm + ((xM - xm) / 2) + 2.25), (float)-1.75));
+    }
+
+    public void CloseShop()
+    {
+        GameObject[] temp = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+        for (int i = 0; i < temp.Length; i++)
+        {
+            if (temp[i].name == "Shop1")
+            {
+                GameObject.Destroy(temp[i]);
+            }
+            if (temp[i].name == "Shop2")
+            {
+                GameObject.Destroy(temp[i]);
+            }
+            if (temp[i].name == "Shop3")
+            {
+                GameObject.Destroy(temp[i]);
+            }
+        }
+    }
+
+    private void CreateSprite(string name, string item, Vector3 pos)
+    {
+        Sprite s = Resources.Load<Sprite>("SpritesPNG/"+item);
+        var new_sprite = new GameObject();
+        new_sprite.name = name;
+        new_sprite.AddComponent<SpriteRenderer>();
+        var ui_renderer = new_sprite.GetComponent<SpriteRenderer>();
+        ui_renderer.sprite = s; // Change to load the sprite file
+
+        new_sprite.transform.localPosition = pos;
+        new_sprite.transform.localScale = new Vector3(5,5,0);
     }
 
     public void DecreaseSize()
@@ -288,6 +327,8 @@ public class BoardControl : MonoBehaviour
             t.SetTile(new Vector3Int(xm, i), null);
             t.SetTile(new Vector3Int(xM-1, i), null);
         }
+        GameObject background = GameObject.Find("Background");
+        background.transform.localScale = new Vector3((float)11.2, (float)11.2, 1);
     }
     public void IncreaseSize()
     {
@@ -302,18 +343,30 @@ public class BoardControl : MonoBehaviour
         int xM = t.cellBounds.xMax;
         int ym = t.cellBounds.yMin;
         int yM = t.cellBounds.yMax;
-        for (int i = xm+increment; i < xM; i++)
+        TileBase temp;
+        if (increment == 0)
         {
-            t.SetTile(new Vector3Int(i, ym+1), new Tile());
-            t.SetTile(new Vector3Int(i, yM), new Tile());
+            temp = Set1;
+        }
+        else
+        {
+            temp = Set2;
+        }
+        for (int i = xm+increment-1; i < xM+1; i++)
+        {
+            t.SetTile(new Vector3Int(i, ym-1), temp);
+            t.SetTile(new Vector3Int(i, yM), temp);
             i++;
         }
 
-        for (int i = ym+increment; i < yM; i++)
+        for (int i = ym+increment-1; i < yM+1; i++)
         {
-            t.SetTile(new Vector3Int(xm+1, i), new Tile());
-            t.SetTile(new Vector3Int(xM, i), new Tile());
+            t.SetTile(new Vector3Int(xm-1, i), temp);
+            t.SetTile(new Vector3Int(xM, i), temp);
             i++;
         }
+        GameObject background = GameObject.Find("Background");
+        background.transform.localScale = new Vector3((float)13.3, (float)13.3, 1);
+
     }
 }
