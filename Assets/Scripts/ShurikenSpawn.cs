@@ -7,7 +7,7 @@ using UnityEngine;
 public class ShurikenSpawn : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _shurikenPrefab;
+    private GameObject _shurikenPrefab ;
     [SerializeField]
     private float _shurikenSpeed;
 
@@ -15,7 +15,7 @@ public class ShurikenSpawn : MonoBehaviour
 
     private void Start()
     {
-        Spawn();
+        //Spawn();
     }
     // Update is called once per frame
     void Update()
@@ -49,5 +49,10 @@ public class ShurikenSpawn : MonoBehaviour
             rigidbody.velocity = _shurikenSpeed * Vector2.up;
         }
 
+    }
+
+    public void NextWave(int waveNumber)
+    {
+        // implement different waves here
     }
 }

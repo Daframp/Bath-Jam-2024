@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip shootSound;
     public AudioClip playerHitSound;
     public AudioClip powerUpSound;
+    public string SelectedItem = "";
 
 
 
@@ -159,5 +160,14 @@ public class PlayerController : MonoBehaviour
         shotgun = true;
         shotCooldown *= 1.5f;
         recoilStrength = System.Math.Min(recoilStrength * 1.5f, 8);
+    }
+
+    public string GetItem()
+    {
+        return SelectedItem;
+    }
+    public void ResetItem()
+    {
+        SelectedItem = "";
     }
 }
