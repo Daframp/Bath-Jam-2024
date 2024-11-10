@@ -7,7 +7,15 @@ using UnityEngine;
 public class ShurikenSpawn : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _shurikenPrefab ;
+    private GameObject _shurikenPrefab1;
+    [SerializeField]
+    private GameObject _shurikenPrefab2;
+    [SerializeField]
+    private GameObject _shurikenPrefab3;
+    [SerializeField]
+    private GameObject _shurikenPrefab4;
+
+    private GameObject shuriken;
     [SerializeField]
     private float _shurikenSpeed;
 
@@ -15,17 +23,23 @@ public class ShurikenSpawn : MonoBehaviour
 
     private void Start()
     {
-        //Spawn();
+        Spawn(2);
     }
     // Update is called once per frame
     void Update()
     {
-        
+
         //Spawn();
     }
-    private void Spawn() 
+    private void Spawn(int shurikenVariant)
     {
-        GameObject shuriken = Instantiate(_shurikenPrefab, transform.position,transform.rotation);
+
+
+        if (shurikenVariant == 1) { shuriken = Instantiate(_shurikenPrefab1, transform.position, transform.rotation); }
+        else if (shurikenVariant == 2) { shuriken = Instantiate(_shurikenPrefab2, transform.position, transform.rotation); }
+        else if (shurikenVariant == 3) { shuriken = Instantiate(_shurikenPrefab3, transform.position, transform.rotation); }
+        else if (shurikenVariant == 4) { shuriken = Instantiate(_shurikenPrefab4, transform.position, transform.rotation); }
+
         Rigidbody2D rigidbody = shuriken.GetComponent<Rigidbody2D>();
         if (transform.position.x <= -5.5)
         {
@@ -50,7 +64,6 @@ public class ShurikenSpawn : MonoBehaviour
         }
 
     }
-
     public void NextWave(int waveNumber)
     {
         // implement different waves here
