@@ -38,7 +38,7 @@ public class BoardControl : MonoBehaviour
         TempColors = new List<Color>();
         Counter = 0;    
         GameState = 0;
-        NextStage(); // remove this when we have the main game loop and put it in the main loop
+        NextStage();
         NextRound();
         interval = 3f;
         resetColorList();
@@ -46,7 +46,6 @@ public class BoardControl : MonoBehaviour
         Set1 = tilemaps[0].GetTile(new Vector3Int(0,0,0));
         Set2 = tilemaps[1].GetTile(new Vector3Int(1, 0, 0));
         SetTileMap();
-        
     }
 
     private void resetColorList()
@@ -295,6 +294,9 @@ public class BoardControl : MonoBehaviour
         var new_sprite = new GameObject();
         new_sprite.name = name;
         new_sprite.tag = "Shop";
+        new_sprite.AddComponent<BoxCollider2D>();
+        new_sprite.GetComponent<BoxCollider2D>().isTrigger = true;
+        new_sprite.GetComponent <BoxCollider2D>().size = new Vector2((float)0.16, (float)0.16);
         new_sprite.AddComponent<SpriteRenderer>();
         var ui_renderer = new_sprite.GetComponent<SpriteRenderer>();
         ui_renderer.sprite = s; // Change to load the sprite file
