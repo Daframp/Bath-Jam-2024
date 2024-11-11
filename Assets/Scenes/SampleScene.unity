@@ -622,6 +622,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 184054124902557088, guid: eee0e08d0afeb564aa90136360714bcf, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 4985220923295201022, guid: eee0e08d0afeb564aa90136360714bcf, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -800,7 +804,7 @@ GameObject:
   - component: {fileID: 802246242}
   m_Layer: 0
   m_Name: GridBackground
-  m_TagString: Untagged
+  m_TagString: Background
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
