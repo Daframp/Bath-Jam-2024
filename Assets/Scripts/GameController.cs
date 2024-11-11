@@ -57,9 +57,9 @@ public class GameController : MonoBehaviour
         counter = 0;
         counter2 = 0;
 
-        // GenExplosive();
+        //GenWall();
 
-        if (musicEnabled)
+        if (musicEnabled == false)
         {
             audioSource = GetComponent<AudioSource>();
             audioSource.PlayOneShot(battleMusic);
@@ -364,6 +364,9 @@ public class GameController : MonoBehaviour
         new_sprite.AddComponent<SpriteRenderer>();
         if (name == "Wall")
         {
+            new_sprite.AddComponent<BoxCollider2D>();
+            new_sprite.GetComponent<BoxCollider2D>().size = new Vector2((float) 0.16, (float)0.16);
+            new_sprite.GetComponent<BoxCollider2D>().isTrigger = true;
             new_sprite.tag = "Wall";
         }
         if (name == "Explosive")

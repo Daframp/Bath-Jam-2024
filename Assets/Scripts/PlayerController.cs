@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -199,6 +200,19 @@ public class PlayerController : MonoBehaviour
         {
             SelectedItem = collision.gameObject.name;
         }
-
+        if (collision.tag == "Wall")
+        {
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            float y = rb.velocity.y;
+            float x = rb.velocity.x;
+            if (Math.Abs(rb.position.x - collision.transform.position.x) < Math.Abs(rb.position.y - collision.transform.position.y))
+            {
+                rb.velocity = new Vector2(x,-1*y);
+            }
+            else
+            {
+               rb.velocity = new Vector2(-1*x,  y);
+            }
+        }
     }
 }
