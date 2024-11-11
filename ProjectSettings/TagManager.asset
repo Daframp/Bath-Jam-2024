@@ -8,6 +8,8 @@ TagManager:
   - Explosive
   - Wall
   - Shop
+  - Background
+  - Asteroid
   layers:
   - Default
   - TransparentFX
