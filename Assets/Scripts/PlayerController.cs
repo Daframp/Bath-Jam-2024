@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
             rb = GetComponent<Rigidbody2D>();
         }
         audioSource = GetComponent<AudioSource>();
+        GetSMG();
         ChangeDrag();
     }
 
@@ -63,6 +64,7 @@ public class PlayerController : MonoBehaviour
     void Shoot()
     {
         if (!reloading){
+            audioSource.volume = shotDamage;
             audioSource.PlayOneShot(shootSound);
             StartCoroutine(Reload());
             ApplyRecoil();
@@ -163,6 +165,13 @@ public class PlayerController : MonoBehaviour
         shotgun = true;
         shotCooldown *= 1.5f;
         recoilStrength = System.Math.Min(recoilStrength * 1.5f, 8);
+    }
+    public void GetSMG()
+    {
+        audioSource.PlayOneShot(powerUpSound);
+        shotCooldown *= 0.2f;
+        shotDamage *= 0.2f;
+        recoilStrength *= 0.2f;
     }
 
     public string GetItem()
