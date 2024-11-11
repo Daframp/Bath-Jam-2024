@@ -15,6 +15,7 @@ public class Shuriken : MonoBehaviour
 
     private Transform _player;
     private Vector2 directionToPlayer;
+    private float health = 1f;
 
 
     private void Awake()
@@ -29,6 +30,7 @@ public class Shuriken : MonoBehaviour
     {
         if (collision.GetComponent<PlayerController>())
         {
+            collision.GetComponent<PlayerController>().PlayerHit();
             Debug.Log("Player hit");
         }
     }
@@ -93,6 +95,13 @@ public class Shuriken : MonoBehaviour
             setVelocity();
 
 
+        }
+    }
+
+    public void enemyHit(float damage){
+        health -= damage;
+        if (health <= 0){
+            Destroy(gameObject);
         }
     }
 }

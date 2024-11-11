@@ -37,13 +37,10 @@ public class GameController : MonoBehaviour
     private bool dodgeMode = false;
 
     private bool Dead = false;
+    
 
     void Start()
     {
-        if (musicEnabled){
-        audioSource = GetComponent<AudioSource>();
-        audioSource.PlayOneShot(battleMusic);
-        }
         currentBoard = FindObjectOfType<Grid>();
         GameObject[] temp = FindObjectsOfType(typeof(GameObject)) as GameObject[];
         foreach (GameObject go in temp)
@@ -60,7 +57,13 @@ public class GameController : MonoBehaviour
         difficulty = 0;
         counter = 0;
         counter2 = 0;
-        GenExplosive();
+
+        // GenExplosive();
+
+        if (musicEnabled){
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(battleMusic);
+        }
         //currentBoard.GetComponent<BoardControl>().NextStage();
         
     }

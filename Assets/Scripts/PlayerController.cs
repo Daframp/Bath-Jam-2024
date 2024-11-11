@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip playerHitSound;
     public AudioClip powerUpSound;
     public string SelectedItem = "";
+    public Rect boardBounds;
 
 
 
@@ -83,6 +85,7 @@ public class PlayerController : MonoBehaviour
             
         }
         bullet.GetComponent<BulletController>().SetPiercing(piercing);
+        bullet.GetComponent<BulletController>().SetDamage(shotDamage);
     }
     void ApplyRecoil()
     {
@@ -169,5 +172,17 @@ public class PlayerController : MonoBehaviour
     public void ResetItem()
     {
         SelectedItem = "";
+    }
+
+    public void FellOffBoard()
+    {
+        transform.position = Vector2.zero;
+        PlayerHit();
+    }
+
+    public void PlayerHit(){
+        health -= 1;
+        audioSource.PlayOneShot(playerHitSound);
+        Debug.Log(health);
     }
 }
