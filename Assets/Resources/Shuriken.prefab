@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 811698833474659918}
   - component: {fileID: 5039504256990724756}
   - component: {fileID: 5479534868257997175}
-  - component: {fileID: 7663756087670601506}
+  - component: {fileID: 2650363795365205059}
   m_Layer: 0
   m_Name: Shuriken
   m_TagString: Enemy
@@ -66,13 +66,13 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &7663756087670601506
+--- !u!114 &2650363795365205059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -81,9 +81,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 509882442349559954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1b045f10387a3419c95a274d008674, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c4c5998816170f48938cc5c54f26dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shurikenType: 1
+  shuriken2Frequency: 0
 --- !u!1 &8531091146383326856
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4254099500588097499}
   - component: {fileID: 3584584414070207497}
-  - component: {fileID: 3114108594821291390}
+  - component: {fileID: 3684338682493105943}
   m_Layer: 0
   m_Name: Graphics
   m_TagString: Untagged
@@ -158,7 +160,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 50e43dce9d6e0fb49a21591bcb8d15cd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fdfa1ab45759a93489d3c72c2004a010, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -169,7 +171,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3114108594821291390
+--- !u!114 &3684338682493105943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,6 +180,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8531091146383326856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23b8a38305b00c742ad939600799defa, type: 3}
+  m_Script: {fileID: 11500000, guid: 4da4e4e12c7c9944289a1bdfc9ec4d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
