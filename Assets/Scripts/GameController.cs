@@ -22,7 +22,6 @@ public class GameController : MonoBehaviour
     private GameObject enemy;
 
     [SerializeField] float interval;
-    public bool musicEnabled;
     private float time;
 
     int difficulty;
@@ -40,10 +39,8 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        if (musicEnabled){
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(battleMusic);
-        }
         currentBoard = FindObjectOfType<Grid>();
         GameObject[] temp = FindObjectsOfType(typeof(GameObject)) as GameObject[];
         foreach (GameObject go in temp)
@@ -60,7 +57,6 @@ public class GameController : MonoBehaviour
         difficulty = 0;
         counter = 0;
         counter2 = 0;
-        GenExplosive();
         //currentBoard.GetComponent<BoardControl>().NextStage();
         
     }
@@ -298,6 +294,7 @@ public class GameController : MonoBehaviour
                 {
                     enemy.GetComponent<ShurikenSpawn>().NextWave(counter % 5, dodgeMode);
                 }
+                counter2++;
                 StartCoroutine(WaveTime2());
             }
         }
