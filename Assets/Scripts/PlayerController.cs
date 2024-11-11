@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
             rb = GetComponent<Rigidbody2D>();
         }
         audioSource = GetComponent<AudioSource>();
-        GetSMG();
         ChangeDrag();
     }
 
@@ -193,5 +192,13 @@ public class PlayerController : MonoBehaviour
         health -= 1;
         audioSource.PlayOneShot(playerHitSound);
         Debug.Log(health);
+    }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Shop")
+        {
+            SelectedItem = collision.gameObject.name;
+        }
+
     }
 }

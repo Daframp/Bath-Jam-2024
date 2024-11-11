@@ -59,9 +59,10 @@ public class GameController : MonoBehaviour
 
         // GenExplosive();
 
-        if (musicEnabled){
-        audioSource = GetComponent<AudioSource>();
-        audioSource.PlayOneShot(battleMusic);
+        if (musicEnabled)
+        {
+            audioSource = GetComponent<AudioSource>();
+            audioSource.PlayOneShot(battleMusic);
         }
         //currentBoard.GetComponent<BoardControl>().NextStage();
         
@@ -74,6 +75,20 @@ public class GameController : MonoBehaviour
             if (player.GetComponent<PlayerController>().GetHealth() == 0)
             {
                 Death();
+            }
+            else if (ShopOpen == true)
+            {
+                if (player.GetComponent<PlayerController>().GetItem() != "")
+                {
+                    Effects[2] = player.GetComponent<PlayerController>().GetItem();
+                    Debug.Log(Effects[2]);
+                    player.GetComponent<PlayerController>().ResetItem();
+                    currentBoard.GetComponent<BoardControl>().CloseShop();
+                    currentBoard.GetComponent<BoardControl>().NextStage();
+                    currentBoard.GetComponent<BoardControl>().NextRound();
+                    RunEffects();
+                    ShopOpen = false;
+                }
             }
             else
             {
@@ -121,11 +136,15 @@ public class GameController : MonoBehaviour
         }
         if (Effects.Contains("asteroid"))
         {
-            //GenAsteroid();
+            GenAsteroid();
         }
         if (Effects.Contains("Shotgun"))
         {
             player.GetComponent<PlayerController>().GetShotgun();
+        }
+        if (Effects.Contains("SMG"))
+        {
+            player.GetComponent<PlayerController>().GetSMG();
         }
         if (Effects.Contains("Sniper"))
         {
@@ -186,7 +205,7 @@ public class GameController : MonoBehaviour
         }
         if (Effects.Contains("asteroid"))
         {
-            //GenExploded();
+            GenExploded();
         }
         if (Effects.Contains("VetoBlue"))
         {
@@ -220,12 +239,15 @@ public class GameController : MonoBehaviour
     private void GenAsteroid()
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
-        CreateSprite("X-Mark", "XSprite", new Vector3(Random.Range(size[0], size[1]), Random.Range(size[2], size[3])));
+        CreateSprite("X-Mark", "AsteroidLanding", new Vector3(Random.Range(size[0], size[1]), Random.Range(size[2], size[3])));
     }
     private void GenExploded()
     {
         GameObject[] g = GameObject.FindGameObjectsWithTag("Asteroid");
         g[0].AddComponent<Expolsion>();
+        g[0].AddComponent<BoxCollider2D>();
+        g[0].GetComponent<BoxCollider2D>().size = new Vector2((float)0.16, (float)0.16);
+        g[0].tag = "Explosive";
         g[0].GetComponent<Expolsion>().SetCenter(g[0].transform.position);
         g[0].GetComponent<Expolsion>().Explode();
     }
@@ -259,51 +281,40 @@ public class GameController : MonoBehaviour
 
     private void UpdateWave()
     {
-        if (ShopOpen == true)
+        if (!CreatingWaves)
         {
-            if (player.GetComponent<PlayerController>().GetItem() != "")
+            if (counter2 == (difficulty + 1) * 2)
             {
-                Effects[2] = player.GetComponent<PlayerController>().GetItem();
-                player.GetComponent<PlayerController>().ResetItem();
-                currentBoard.GetComponent<BoardControl>().CloseShop();
-                currentBoard.GetComponent<BoardControl>().NextStage();
-            }
-        }
-        else
-        {
-            if (!CreatingWaves)
-            {
-                if (counter2 == (difficulty + 1) * 2)
+                if (!isCurrentWave)
                 {
-                    if (!isCurrentWave)
+                    counter++;
+                    if (counter % 5 == 0)
                     {
-                        counter++;
-                        if (counter % 5 == 0)
-                        {
-                            ShopOpen = true;
-                            currentBoard.GetComponent<BoardControl>().Shop();
-                        }
-                        if (counter % 10 == 0)
-                        {
-                            difficulty++;
-                        }
-                        else
-                        {
-                            currentBoard.GetComponent<BoardControl>().NextRound();
-                        }
-                        StartCoroutine(WaveTime());
-                        counter2 = 0;
-
+                        ShopOpen = true;
+                        DeRunEffects();
+                        currentBoard.GetComponent<BoardControl>().Shop();
                     }
+                    if (counter % 10 == 0)
+                    {
+                        difficulty++;
+                    }
+                    else
+                    {
+                        currentBoard.GetComponent<BoardControl>().NextRound();
+                    }
+                    StartCoroutine(WaveTime());
+                    counter2 = 0;
+
                 }
-                else
-                {
-                    enemy.GetComponent<ShurikenSpawn>().NextWave(counter % 5, dodgeMode);
-                }
-                counter2++;
-                StartCoroutine(WaveTime2());
             }
+            else
+            {
+                enemy.GetComponent<ShurikenSpawn>().NextWave(counter % 5, dodgeMode);
+            }
+            counter2++;
+            StartCoroutine(WaveTime2());
         }
+        
     }
 
     private IEnumerator WaveTime()

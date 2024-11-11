@@ -27,7 +27,7 @@ public class BoardControl : MonoBehaviour
     private Color[] CurrentColors = new Color[] { Color.white, Color.black };
     private List<Color> TempColors = new List<Color>();
 
-    private string[] WeaponAttachs = new string[] { "Sword", "Shotgun", "Piercing", "Sniper"};
+    private string[] WeaponAttachs = new string[] { "SMG", "Shotgun", "Piercing", "Sniper"};
     private string[] Others = new string[] {"Explosives", "Wall", "BoardExpansion", "Tophat", "VetoBlue", "VetoGreen", "VetoYellow", "VetoRed" };
 
 
@@ -167,6 +167,7 @@ public class BoardControl : MonoBehaviour
         {
             GameState++;
         }
+        Debug.Log("fuck");
     }
 
     public void NextRound()
@@ -261,11 +262,11 @@ public class BoardControl : MonoBehaviour
         SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), 2), tilemaps[0]);
         SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), 0), tilemaps[0]);
         SetTileColour(Color.blue, new Vector3Int(xm + ((xM - xm) / 2), -2), tilemaps[0]);
-        CreateSprite("Shop1","Heart", new Vector3((float) (xm + ((xM - xm) / 2) + 2.25), (float)2.75));
+        CreateSprite("Heart","Heart", new Vector3((float) (xm + ((xM - xm) / 2) + 2.25), (float)2.75));
         int rnd = Random.Range(0, WeaponAttachs.Length);
-        CreateSprite("Shop2", WeaponAttachs[rnd], new Vector3((float)(xm + ((xM - xm) / 2) + 2.25), (float)0.50));
+        CreateSprite(WeaponAttachs[rnd], WeaponAttachs[rnd], new Vector3((float)(xm + ((xM - xm) / 2) + 2.25), (float)0.50));
         rnd = Random.Range(0, Others.Length);
-        CreateSprite("Shop3", Others[rnd], new Vector3((float)(xm + ((xM - xm) / 2) + 2.25), (float)-1.75));
+        CreateSprite(Others[rnd], Others[rnd], new Vector3((float)(xm + ((xM - xm) / 2) + 2.25), (float)-1.75));
     }
 
     public void CloseShop()
@@ -273,15 +274,7 @@ public class BoardControl : MonoBehaviour
         GameObject[] temp = FindObjectsOfType(typeof(GameObject)) as GameObject[];
         for (int i = 0; i < temp.Length; i++)
         {
-            if (temp[i].name == "Shop1")
-            {
-                GameObject.Destroy(temp[i]);
-            }
-            if (temp[i].name == "Shop2")
-            {
-                GameObject.Destroy(temp[i]);
-            }
-            if (temp[i].name == "Shop3")
+            if (temp[i].tag == "Shop")
             {
                 GameObject.Destroy(temp[i]);
             }
@@ -332,7 +325,7 @@ public class BoardControl : MonoBehaviour
             t.SetTile(new Vector3Int(xm, i), null);
             t.SetTile(new Vector3Int(xM-1, i), null);
         }
-        GameObject background = GameObject.Find("Background");
+        GameObject background = GameObject.Find("GridBackground");
         background.transform.localScale -= new Vector3((float)1.1, (float)1.1, 0);
     }
     public void IncreaseSize()
@@ -378,7 +371,7 @@ public class BoardControl : MonoBehaviour
             }
             i++;
         }
-        GameObject background = GameObject.Find("Background");
+        GameObject background = GameObject.Find("GridBackground");
         background.transform.localScale += new Vector3((float)1.1, (float)1.1, 0);
 
     }
@@ -399,6 +392,7 @@ public class BoardControl : MonoBehaviour
     public int[] GetSize()
     {
         var t = tilemaps[0];
+        t.CompressBounds(); 
         return new int[] { t.cellBounds.xMin, t.cellBounds.xMax, t.cellBounds.yMin, t.cellBounds.yMax };
     }
 }

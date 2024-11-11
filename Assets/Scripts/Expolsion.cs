@@ -38,7 +38,7 @@ public class Expolsion : MonoBehaviour
         foreach (var hitCollider in hitColliders)
         {
             GameObject temp = hitCollider.gameObject;
-            if (temp.tag != "Player")
+            if (temp.tag != "Player" && temp.tag != "Background")
             {
                 Destroy(temp);
             }
@@ -48,7 +48,10 @@ public class Expolsion : MonoBehaviour
             }
             else
             {
-                temp.GetComponent<PlayerController>().SetHealth(0);
+                if (temp.tag == "Player")
+                {
+                    temp.GetComponent<PlayerController>().SetHealth(0);
+                }
             }
         }
         Destroy(self);
