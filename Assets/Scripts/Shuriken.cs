@@ -73,7 +73,7 @@ public class Shuriken : MonoBehaviour
 
         else if (shurikenType == 3)
         {
-            if (Mathf.Abs(transform.position.x) >= 6 || Mathf.Abs(transform.position.y) >= 6)
+            if (Mathf.Abs(transform.position.x) >= 6.3 || Mathf.Abs(transform.position.y) >= 6.3)
             {
                 if (counter != 1)
                 {
