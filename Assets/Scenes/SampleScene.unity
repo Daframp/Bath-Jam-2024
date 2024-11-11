@@ -1683,8 +1683,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0e05d4d6391fa4e87773af4750c287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battleMusic: {fileID: 0}
-  menuMusic: {fileID: 0}
+  battleMusic: {fileID: 8300000, guid: b7e28e8b9561f784bbc4bdef44452417, type: 3}
+  menuMusic: {fileID: 8300000, guid: 8798c609dd3177b438a50364e9dcb0f3, type: 3}
   interval: 0
 --- !u!1 &1631662193
 GameObject:
