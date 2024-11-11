@@ -39,12 +39,14 @@ public class BoardControl : MonoBehaviour
         Counter = 0;    
         GameState = 0;
         NextStage(); // remove this when we have the main game loop and put it in the main loop
+        NextRound();
         interval = 3f;
         resetColorList();
         tilemaps = GetComponentsInChildren<Tilemap>();
         Set1 = tilemaps[0].GetTile(new Vector3Int(0,0,0));
         Set2 = tilemaps[1].GetTile(new Vector3Int(1, 0, 0));
         SetTileMap();
+        
     }
 
     private void resetColorList()

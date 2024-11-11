@@ -22,7 +22,6 @@ public class GameController : MonoBehaviour
     private GameObject enemy;
 
     [SerializeField] float interval;
-    public bool musicEnabled;
     private float time;
 
     int difficulty;
@@ -301,6 +300,7 @@ public class GameController : MonoBehaviour
                 {
                     enemy.GetComponent<ShurikenSpawn>().NextWave(counter % 5, dodgeMode);
                 }
+                counter2++;
                 StartCoroutine(WaveTime2());
             }
         }
