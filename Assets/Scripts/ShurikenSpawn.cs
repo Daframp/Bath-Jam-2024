@@ -36,7 +36,7 @@ public class ShurikenSpawn : MonoBehaviour
     private void Start()
     {
         //Spawn(2);
-        NextWave(5);
+        //NextWave(5);
     }
     // Update is called once per frame
     void Update()
@@ -46,12 +46,14 @@ public class ShurikenSpawn : MonoBehaviour
     }
     private void Spawn(int shurikenVariant)
     {
-
-
-        if (shurikenVariant == 1) { shuriken = Instantiate(_shurikenPrefab1, transform.position, transform.rotation); }
-        else if (shurikenVariant == 2) { shuriken = Instantiate(_shurikenPrefab2, transform.position, transform.rotation); }
-        else if (shurikenVariant == 3) { shuriken = Instantiate(_shurikenPrefab3, transform.position, transform.rotation); }
-        else if (shurikenVariant == 4) { shuriken = Instantiate(_shurikenPrefab4, transform.position, transform.rotation); }
+        if (shurikenVariant == 0)
+        {
+            return;
+        }
+        if (shurikenVariant == 1) { shuriken = Instantiate(Resources.Load("Shuriken") as GameObject, transform.position, transform.rotation); }
+        else if (shurikenVariant == 2) { shuriken = Instantiate(Resources.Load("Shuriken2") as GameObject, transform.position, transform.rotation); }
+        else if (shurikenVariant == 3) { shuriken = Instantiate(Resources.Load("Shuriken3") as GameObject, transform.position, transform.rotation); }
+        else if (shurikenVariant == 4) { shuriken = Instantiate(Resources.Load("Shuriken4") as GameObject, transform.position, transform.rotation); }
 
         Rigidbody2D rigidbody = shuriken.GetComponent<Rigidbody2D>();
         if (transform.position.x <= -5.5)
