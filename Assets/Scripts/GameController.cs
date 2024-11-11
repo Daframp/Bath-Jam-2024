@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
     private bool dodgeMode = false;
 
     private bool Dead = false;
-    
+    public bool musicEnabled;
 
     void Start()
     {
