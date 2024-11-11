@@ -51,7 +51,7 @@ public class ShurikenSpawn : MonoBehaviour
 
     }
 
-    public void NextWave(int waveNumber)
+    public void NextWave(int waveNumber,bool dodgeMode)
     {
         // implement different waves here
     }

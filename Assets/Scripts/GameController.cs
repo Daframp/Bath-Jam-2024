@@ -26,8 +26,10 @@ public class GameController : MonoBehaviour
 
     int difficulty;
     int counter;
+    int counter2;
 
     bool isCurrentWave = false;
+    bool CreatingWaves = false;
     bool ShopOpen = false;
 
     private string[] Effects = new string[3] {"","",""};
@@ -54,20 +56,26 @@ public class GameController : MonoBehaviour
         }
         difficulty = 0;
         counter = 0;
+        counter2 = 0;
+        GenExplosive();
         //currentBoard.GetComponent<BoardControl>().NextStage();
+        
     }
 
     void Update()
     {
-        if (player.GetComponent<PlayerController>().GetHealth() == 0)
-        {
-            Death();
-        }
         if (!Dead)
         {
-            UpdateEffects();
-            UpdateInterval();
-            UpdateWave();
+            if (player.GetComponent<PlayerController>().GetHealth() == 0)
+            {
+                Death();
+            }
+            else
+            {
+                UpdateEffects();
+                UpdateInterval();
+                UpdateWave();
+            }
         }
     }
 
@@ -207,23 +215,32 @@ public class GameController : MonoBehaviour
     private void GenAsteroid()
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
-        CreateSprite("X-Marks the Spot", "XSprite", new Vector3(Random.Range(size[0], size[1]), Random.Range(size[2], size[3])));
+        CreateSprite("X-Mark", "XSprite", new Vector3(Random.Range(size[0], size[1]), Random.Range(size[2], size[3])));
     }
     private void GenExploded()
     {
-
+        GameObject[] g = GameObject.FindGameObjectsWithTag("Asteroid");
+        g[0].AddComponent<Expolsion>();
+        g[0].GetComponent<Expolsion>().SetCenter(g[0].transform.position);
+        g[0].GetComponent<Expolsion>().Explode();
     }
 
-    private void GenWall()
+    private void GenWall(int x = 1000, int y = 1000)
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
-        CreateSprite("Wall", "Wall", new Vector3(Random.Range(size[0], size[1]), Random.Range(size[2], size[3])));
+        if (x == 1000 && y == 1000)
+        {
+            x = Random.Range(size[0], size[1]);
+            y = Random.Range(size[2], size[3]);
+        }
+        CreateSprite("Wall", "Wall", new Vector3(x,y));
     }
     
     private void GenExplosive()
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
-        CreateSprite("Explosive", "Explosives", new Vector3(Random.Range(size[0], size[1]), Random.Range(size[2], size[3])));
+        Instantiate(Resources.Load("Explosive") as GameObject);
+
     }
 
     private void RemoveGO(string tag)
@@ -249,25 +266,36 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            if (!isCurrentWave)
+            if (!CreatingWaves)
             {
-                counter++;
-                if (counter % 5 == 0)
+                if (counter2 == (difficulty + 1) * 2)
                 {
-                    ShopOpen = true;
-                    currentBoard.GetComponent<BoardControl>().Shop();
-                }
-                if (counter % 10 == 0)
-                {
-                    difficulty++;
+                    if (!isCurrentWave)
+                    {
+                        counter++;
+                        if (counter % 5 == 0)
+                        {
+                            ShopOpen = true;
+                            currentBoard.GetComponent<BoardControl>().Shop();
+                        }
+                        if (counter % 10 == 0)
+                        {
+                            difficulty++;
+                        }
+                        else
+                        {
+                            currentBoard.GetComponent<BoardControl>().NextRound();
+                        }
+                        StartCoroutine(WaveTime());
+                        counter2 = 0;
+
+                    }
                 }
                 else
                 {
-                    currentBoard.GetComponent<BoardControl>().NextRound();
+                    enemy.GetComponent<ShurikenSpawn>().NextWave(counter % 5, dodgeMode);
                 }
-                enemy.GetComponent<ShurikenSpawn>().NextWave(counter%5);
-                StartCoroutine(WaveTime());
-
+                StartCoroutine(WaveTime2());
             }
         }
     }
@@ -278,10 +306,17 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(interval);
         isCurrentWave = false;
     }
+    private IEnumerator WaveTime2()
+    {
+        CreatingWaves = true;
+        yield return new WaitForSeconds(interval/2);
+        CreatingWaves = false;
+    }
 
     private void Death()
     {
-        GameObject.Destroy(player);
+        Destroy(player);
+        Dead = true;
     }
 
     private void UpdateInterval()
@@ -317,6 +352,11 @@ public class GameController : MonoBehaviour
         if (name == "Explosive")
         {
             new_sprite.tag = "Explosive";
+            new_sprite.AddComponent<Expolsion>();
+        }
+        if (name == "X-Mark")
+        {
+            new_sprite.tag = "Asteroid";
         }
         var ui_renderer = new_sprite.GetComponent<SpriteRenderer>();
         ui_renderer.sprite = s; // Change to load the sprite file
