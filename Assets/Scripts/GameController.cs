@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     private GameObject enemy;
 
     [SerializeField] float interval;
+    public bool musicEnabled;
     private float time;
 
     int difficulty;
@@ -39,8 +40,10 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        if (musicEnabled){
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(battleMusic);
+        }
         currentBoard = FindObjectOfType<Grid>();
         GameObject[] temp = FindObjectsOfType(typeof(GameObject)) as GameObject[];
         foreach (GameObject go in temp)
