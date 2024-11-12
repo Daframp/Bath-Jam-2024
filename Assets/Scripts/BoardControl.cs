@@ -313,6 +313,7 @@ public class BoardControl : MonoBehaviour
 
     public void DecreaseSize()
     {
+        Debug.Log(tilemaps[0].cellBounds.xMin);
         foreach (var tilemap in tilemaps)
         {
             RemoveTiles(tilemap);
@@ -391,11 +392,12 @@ public class BoardControl : MonoBehaviour
     public void VetoColor(Color c)
     {
         colors.Remove(c);
-        colors.Add(Color.white);
+        colors.Add(Color.black);
         foreach (Color c2 in colors)
         {
             if (c2 == c)
             {
+                Debug.Log(c2);
             }
         }
     }

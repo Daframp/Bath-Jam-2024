@@ -91,6 +91,7 @@ public class GameController : MonoBehaviour
             {
                 Start();
                 Dead = false;
+                //currentBoard.GetComponent<BoardControl>().VetoColor(Color.blue);
                 return;   
             }
             if (player.GetComponent<PlayerController>().GetHealth() == 0)
@@ -107,7 +108,7 @@ public class GameController : MonoBehaviour
                     currentBoard.GetComponent<BoardControl>().CloseShop();
                     currentBoard.GetComponent<BoardControl>().NextStage();
                     currentBoard.GetComponent<BoardControl>().NextRound();
-                    RunEffects();
+                    RunEffects(true);
                     ShopOpen = false;
                 }
             }
@@ -154,8 +155,12 @@ public class GameController : MonoBehaviour
         
 
     }
-    private void RunEffects()
+    private void RunEffects(bool weaponUpgrade = false)
     {
+        if (Effects.Contains("Health"))
+        {
+            player.GetComponent<PlayerController>().SetHealth((int) player.GetComponent<PlayerController>().GetHealth()+1);
+        }
         if (Effects.Contains("lessFriction"))
         {
             player.GetComponent<PlayerController>().SetFriction(player.GetComponent<PlayerController>().GetFriction()-1);
@@ -172,21 +177,24 @@ public class GameController : MonoBehaviour
         {
             GenAsteroid();
         }
-        if (Effects.Contains("Shotgun"))
+        if (weaponUpgrade)
         {
-            player.GetComponent<PlayerController>().GetShotgun();
-        }
-        if (Effects.Contains("SMG"))
-        {
-            player.GetComponent<PlayerController>().GetSMG();
-        }
-        if (Effects.Contains("Sniper"))
-        {
-            player.GetComponent<PlayerController>().GetSniper();
-        }
-        if (Effects.Contains("Piercing"))
-        {
-            player.GetComponent<PlayerController>().SetPiercing(true);
+            if (Effects.Contains("Shotgun"))
+            {
+                player.GetComponent<PlayerController>().GetShotgun();
+            }
+            if (Effects.Contains("SMG"))
+            {
+                player.GetComponent<PlayerController>().GetSMG();
+            }
+            if (Effects.Contains("Sniper"))
+            {
+                player.GetComponent<PlayerController>().GetSniper();
+            }
+            if (Effects.Contains("Piercing"))
+            {
+                player.GetComponent<PlayerController>().SetPiercing(true);
+            }
         }
         if (Effects.Contains("Tophat"))
         {
@@ -220,9 +228,10 @@ public class GameController : MonoBehaviour
         {
             GenExplosive(); 
         }
+
     }
 
-    private void DeRunEffects()
+    private void DeRunEffects(bool EndStage = false)
     {
         if (Effects.Contains("lessFriction"))
         {
@@ -240,21 +249,24 @@ public class GameController : MonoBehaviour
         {
             GenExploded();
         }
-        if (Effects.Contains("VetoBlue"))
+        if (EndStage)
         {
-            currentBoard.GetComponent<BoardControl>().AddColor(Color.blue);
-        }
-        if (Effects.Contains("VetoYellow"))
-        {
-            currentBoard.GetComponent<BoardControl>().AddColor(Color.yellow);
-        }
-        if (Effects.Contains("VetoRed"))
-        {
-            currentBoard.GetComponent<BoardControl>().AddColor(Color.red);
-        }
-        if (Effects.Contains("VetoGreen"))
-        {
-            currentBoard.GetComponent<BoardControl>().AddColor(Color.green);
+            if (Effects.Contains("VetoBlue"))
+            {
+                currentBoard.GetComponent<BoardControl>().AddColor(Color.blue);
+            }
+            if (Effects.Contains("VetoYellow"))
+            {
+                currentBoard.GetComponent<BoardControl>().AddColor(Color.yellow);
+            }
+            if (Effects.Contains("VetoRed"))
+            {
+                currentBoard.GetComponent<BoardControl>().AddColor(Color.red);
+            }
+            if (Effects.Contains("VetoGreen"))
+            {
+                currentBoard.GetComponent<BoardControl>().AddColor(Color.green);
+            }
         }
         if (Effects.Contains("BoardExpansion"))
         {
@@ -301,6 +313,7 @@ public class GameController : MonoBehaviour
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
         Instantiate(Resources.Load("Explosive") as GameObject, new Vector3(UnityEngine.Random.Range(size[0] + 1, size[1] + 1), UnityEngine.Random.Range(size[2], size[3])), new Quaternion());
+
     }
 
     private void RemoveGO(string tag)
@@ -324,7 +337,7 @@ public class GameController : MonoBehaviour
                     if (counter % 5 == 0)
                     {
                         ShopOpen = true;
-                        DeRunEffects();
+                        DeRunEffects(true);
                         currentBoard.GetComponent<BoardControl>().Shop();
                     }
                     if (counter % 10 == 0)
