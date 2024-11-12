@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     public AudioClip powerUpSound;
     public string SelectedItem = "";
     public Rect boardBounds;
+    private bool invincible = false;
+    private float iFramesLength = 0.2f;
 
 
 
@@ -133,10 +135,23 @@ public class PlayerController : MonoBehaviour
 
     public void SetHealth(int value)
     {
-        health = value;
-        transform.Find("Canvas").Find("HealthText").GetComponent<TextMeshProUGUI>().SetText(health.ToString());
+        //Dont lost health if invincible
+        if (!(value< health && invincible)){
+            //Start i frames if losing health
+            if (value < health){
+                StartCoroutine(iFrames());
+            }
+            health = value;
+            transform.Find("Canvas").Find("HealthText").GetComponent<TextMeshProUGUI>().SetText(health.ToString());
+        }
     }
 
+    private IEnumerator iFrames()
+    {
+        invincible = true;
+        yield return new WaitForSeconds(iFramesLength);
+        invincible = false;
+    }
     public float GetHealth()
     {
         return health;
