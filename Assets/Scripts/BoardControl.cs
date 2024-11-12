@@ -32,7 +32,7 @@ public class BoardControl : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         CurrentColors = new Color[] { Color.white, Color.black };
         TempColors = new List<Color>();
@@ -247,7 +247,7 @@ public class BoardControl : MonoBehaviour
 
     public void Reset()
     {
-        Start();
+        Awake();
     }
 
     public Color[] CurrentColours()
@@ -330,7 +330,6 @@ public class BoardControl : MonoBehaviour
     }
     public void IncreaseSize()
     {
-        Debug.Log(tilemaps[0].cellBounds.xMin);
         for(int i = 0; i< tilemaps.Length;i++)
         {
             AddTiles(tilemaps[i],i);
