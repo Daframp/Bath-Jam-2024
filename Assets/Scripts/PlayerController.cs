@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -133,6 +134,7 @@ public class PlayerController : MonoBehaviour
     public void SetHealth(int value)
     {
         health = value;
+        transform.Find("Canvas").Find("HealthText").GetComponent<TextMeshProUGUI>().SetText(health.ToString());
     }
 
     public float GetHealth()
@@ -192,9 +194,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public void PlayerHit(){
-        health -= 1;
+        SetHealth(health -1);
         audioSource.PlayOneShot(playerHitSound);
-        Debug.Log(health);
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -219,7 +220,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Reset()
     {
-        health = 3;
+        SetHealth(3);
         friction = 1f;
         shotCooldown = 0.5f;
         shotDamage = 1f;
@@ -233,4 +234,5 @@ public class PlayerController : MonoBehaviour
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.MovePosition(Vector2.zero);
     }
+
 }
