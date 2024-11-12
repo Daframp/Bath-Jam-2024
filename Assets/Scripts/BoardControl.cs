@@ -290,12 +290,26 @@ public class BoardControl : MonoBehaviour
         new_sprite.AddComponent<BoxCollider2D>();
         new_sprite.GetComponent<BoxCollider2D>().isTrigger = true;
         new_sprite.GetComponent <BoxCollider2D>().size = new Vector2((float)0.16, (float)0.16);
+
+        //Shop items cant be picked up for the first second
+        new_sprite.GetComponent<BoxCollider2D>().enabled = false;
+        StartCoroutine(CallFunctionAfterDelay(1f, new_sprite));
+
         new_sprite.AddComponent<SpriteRenderer>();
         var ui_renderer = new_sprite.GetComponent<SpriteRenderer>();
         ui_renderer.sprite = s; // Change to load the sprite file
 
         new_sprite.transform.localPosition = pos;
         new_sprite.transform.localScale = new Vector3(5,5,0);
+    }
+    IEnumerator CallFunctionAfterDelay(float delay, GameObject shopItem)
+    {
+        yield return new WaitForSeconds(delay);
+        EnableShopCollisions(shopItem);
+    }
+
+    private void EnableShopCollisions(GameObject shopItem){
+        shopItem.GetComponent<BoxCollider2D>().enabled = true;
     }
 
     public void DecreaseSize()

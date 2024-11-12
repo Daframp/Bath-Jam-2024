@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     void Shoot()
     {
-        if (!reloading){
+        if (!reloading && health > 0){
             audioSource.volume = shotDamage;
             audioSource.PlayOneShot(shootSound);
             StartCoroutine(Reload());
