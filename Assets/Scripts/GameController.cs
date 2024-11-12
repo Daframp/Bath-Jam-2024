@@ -284,6 +284,7 @@ public class GameController : MonoBehaviour
         g[0].GetComponent<BoxCollider2D>().size = new Vector2((float)0.16, (float)0.16);
         g[0].tag = "Explosive";
         g[0].GetComponent<Expolsion>().SetCenter(g[0].transform.position);
+        g[0].GetComponent<Expolsion>().Start();
         g[0].GetComponent<Expolsion>().Explode();
     }
 
@@ -302,7 +303,6 @@ public class GameController : MonoBehaviour
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
         Instantiate(Resources.Load("Explosive") as GameObject, new Vector3(UnityEngine.Random.Range(size[0] + 1, size[1] + 1), UnityEngine.Random.Range(size[2], size[3])), new Quaternion());
-
     }
 
     private void RemoveGO(string tag)

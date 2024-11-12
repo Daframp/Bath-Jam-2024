@@ -8,11 +8,12 @@ public class Expolsion : MonoBehaviour
     private float radius = 1;
     [SerializeField] private GameObject explosionParticleEffect;
     private AudioSource audioSource;
-    public AudioClip explosionSound;
+    private AudioClip explosionSound;
 
-    void Start()
+    public void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        explosionSound = Resources.Load<AudioClip>("SoundEffects/Explosion");
     }
 
     private void Awake()
@@ -61,6 +62,8 @@ public class Expolsion : MonoBehaviour
         float lifetime = particleInstance.GetComponent<ParticleSystem>().main.duration;
         Destroy(particleInstance, lifetime);
 
+
+        Debug.Log(explosionSound);
         GameObject soundObject = new GameObject("DestroySound");
             AudioSource audioSource = soundObject.AddComponent<AudioSource>();
 
