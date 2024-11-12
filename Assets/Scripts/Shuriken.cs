@@ -102,6 +102,10 @@ public class Shuriken : MonoBehaviour
     public void enemyHit(float damage){
         health -= damage;
         if (health <= 0){
+            GameObject particleInstance = Instantiate(Resources.Load("EnemyHitParticleEffect") as GameObject, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity);
+            float lifetime = particleInstance.GetComponent<ParticleSystem>().main.duration;
+            Destroy(particleInstance, lifetime);
+
             Destroy(gameObject);
         }
     }

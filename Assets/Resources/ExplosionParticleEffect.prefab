@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4595220379041644195}
   - component: {fileID: 2632167692322048676}
   - component: {fileID: 1247351142133486445}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4891,7 +4891,7 @@ GameObject:
   - component: {fileID: 8046613057672505559}
   - component: {fileID: 840419343606495871}
   - component: {fileID: 245797511363411810}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExplosionParticleEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9736,8 +9736,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1606480601
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
