@@ -186,8 +186,14 @@ public class BoardControl : MonoBehaviour
         }
         if (GameState == 3)
         {
-            CurrentColors[0] = GetColor();
-            CurrentColors[1] = GetColor();
+            CurrentColors[0] = Color.blue;
+            CurrentColors[1] = Color.blue;
+            
+            while (CurrentColors[0] == CurrentColors[1])
+            {
+                CurrentColors[0] = GetColor();
+                CurrentColors[1] = GetColor();
+            }
         }
         if (GameState == 4)
         {
