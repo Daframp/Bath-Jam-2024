@@ -170,6 +170,7 @@ public class PlayerController : MonoBehaviour
     }
     public void GetSMG()
     {
+        Debug.Log("SMG got");
         audioSource.PlayOneShot(powerUpSound);
         shotCooldown *= 0.2f;
         shotDamage *= 0.2f;

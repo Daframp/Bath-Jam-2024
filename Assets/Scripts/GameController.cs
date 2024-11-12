@@ -63,9 +63,9 @@ public class GameController : MonoBehaviour
         counter = 0;
         counter2 = 0;
 
-        //GenWall();
+        GenExplosive();
 
-        if (musicEnabled == false)
+        if (musicEnabled)
         {
             audioSource = GetComponent<AudioSource>();
             audioSource.PlayOneShot(battleMusic);
