@@ -217,7 +217,7 @@ public class ShurikenSpawn : MonoBehaviour
                 transform.Translate(new Vector2(-1, 0));
                 if (transform.position.x == -spawnerOffSet) { transform.Translate(new Vector2(0, -1)); direction = "down"; }
             }
-            Spawn(i,waveNumber,false , (boardWidth/2) + 0.5f);
+            Spawn(i,waveNumber, dodgeMode, (boardWidth/2) + 0.5f);
         }
 
 
