@@ -43,9 +43,14 @@ public class GameController : MonoBehaviour
     private bool Dead = false;
     public bool musicEnabled;
     private bool start = false;
+    private GameObject b ;
 
     void Start()
     {
+        if (b == null)
+        {
+            b = GameObject.Find("Button");
+        }
         currentBoard = FindObjectOfType<Grid>();
         GameObject[] temp = FindObjectsOfType(typeof(GameObject)) as GameObject[];
         foreach (GameObject go in temp)
@@ -77,6 +82,7 @@ public class GameController : MonoBehaviour
 
         Dead = true;
         start = true;
+
     }
 
     void Update()
@@ -86,6 +92,7 @@ public class GameController : MonoBehaviour
             if (player == null)
             {
                 Start();
+                currentBoard.GetComponent<BoardControl>().VetoColor(Color.blue);
                 Dead = false;
                 return;   
             }
@@ -363,7 +370,8 @@ public class GameController : MonoBehaviour
 
     private void Death()
     {
-        //GameObject.Destroy(player);
+        b.gameObject.SetActive(true);
+        GameObject.Destroy(player);
         Dead = true;
     }
 
@@ -441,5 +449,7 @@ public class GameController : MonoBehaviour
         Instantiate(Resources.Load("Player"));
         Instantiate(Resources.Load("ShurikenSpawner"));
         Dead = false;
+
+        b.gameObject.SetActive(false);
     }
 }

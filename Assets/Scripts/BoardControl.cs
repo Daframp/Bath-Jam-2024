@@ -167,7 +167,6 @@ public class BoardControl : MonoBehaviour
         {
             GameState++;
         }
-        Debug.Log("fuck");
     }
 
     public void NextRound()
@@ -394,6 +393,13 @@ public class BoardControl : MonoBehaviour
     {
         colors.Remove(c);
         colors.Add(Color.white);
+        foreach (Color c2 in colors)
+        {
+            if (c2 == c)
+            {
+                Debug.Log(c2);
+            }
+        }
     }
 
     public void AddColor(Color c)
