@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour
     private bool dodgeMode = false;
 
     private bool Dead = false;
-    public bool musicEnabled;
+    private bool musicEnabled = false;
     private bool start = false;
     private GameObject b ;
 
@@ -68,10 +68,11 @@ public class GameController : MonoBehaviour
         counter = 0;
         counter2 = 0;
 
-        if (musicEnabled)
+        if (musicEnabled == false)
         {
             audioSource = GetComponent<AudioSource>();
             audioSource.PlayOneShot(battleMusic);
+            musicEnabled = true;
         }
         //currentBoard.GetComponent<BoardControl>().NextStage();
 
