@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
+using TMPro;
+using System;
+using Unity.VisualScripting;
 using UnityEditor.SearchService;
 using UnityEditor.U2D.Animation;
 using UnityEngine;
@@ -37,6 +42,7 @@ public class GameController : MonoBehaviour
 
     private bool Dead = false;
     public bool musicEnabled;
+    private bool start = false;
 
     void Start()
     {
@@ -44,11 +50,11 @@ public class GameController : MonoBehaviour
         GameObject[] temp = FindObjectsOfType(typeof(GameObject)) as GameObject[];
         foreach (GameObject go in temp)
         {
-            if (go.name == "Player")
+            if (go.tag == "Player")
             {
                 player = go;
             }
-            if (go.name == "Enemy")
+            if (go.tag == "Enemy")
             {
                 enemy = go;
             }
@@ -65,13 +71,24 @@ public class GameController : MonoBehaviour
             audioSource.PlayOneShot(battleMusic);
         }
         //currentBoard.GetComponent<BoardControl>().NextStage();
-        
+
+        GameObject background = GameObject.FindGameObjectWithTag("Background");
+        background.transform.localScale = new Vector3((float) 11.2, (float) 11.2);
+
+        Dead = true;
+        start = true;
     }
 
     void Update()
     {
         if (!Dead)
         {
+            if (player == null)
+            {
+                Start();
+                Dead = false;
+                return;   
+            }
             if (player.GetComponent<PlayerController>().GetHealth() == 0)
             {
                 Death();
@@ -95,12 +112,25 @@ public class GameController : MonoBehaviour
                 UpdateEffects();
                 UpdateInterval();
                 UpdateWave();
+                GameObject g = GameObject.FindGameObjectWithTag("Text");
+                g.GetComponent<TMP_Text>().text = "Score = " + counter.ToString();
             }
+        }
+        else
+        {
         }
     }
 
     private void UpdateEffects()
     {
+        if (start)
+        {
+            Effects[0] = Color_Effects[currentBoard.GetComponent<BoardControl>().CurrentColours()[0]];
+            Effects[1] = Color_Effects[currentBoard.GetComponent<BoardControl>().CurrentColours()[1]];
+            RunEffects();
+            start = false;
+            return;
+        }
         bool update = false;
         if (Effects[0] != Color_Effects[currentBoard.GetComponent<BoardControl>().CurrentColours()[0]] )
         {
@@ -239,7 +269,7 @@ public class GameController : MonoBehaviour
     private void GenAsteroid()
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
-        CreateSprite("X-Mark", "AsteroidLanding", new Vector3(Random.Range(size[0], size[1]), Random.Range(size[2], size[3])));
+        CreateSprite("X-Mark", "AsteroidLanding", new Vector3(UnityEngine.Random.Range(size[0], size[1]), UnityEngine.Random.Range(size[2], size[3])));
     }
     private void GenExploded()
     {
@@ -257,8 +287,8 @@ public class GameController : MonoBehaviour
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
         if (x == 1000 && y == 1000)
         {
-            x = Random.Range(size[0], size[1]);
-            y = Random.Range(size[2], size[3]);
+            x = UnityEngine.Random.Range(size[0], size[1]);
+            y = UnityEngine.Random.Range(size[2], size[3]);
         }
         CreateSprite("Wall", "Wall", new Vector3(x,y));
     }
@@ -309,7 +339,8 @@ public class GameController : MonoBehaviour
             }
             else
             {
-                enemy.GetComponent<ShurikenSpawn>().NextWave(counter % 5, dodgeMode);
+                int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
+                enemy.GetComponent<ShurikenSpawn>().NextWave(counter % 5, dodgeMode, Math.Abs(size[0] - size[1]));
             }
             counter2++;
             StartCoroutine(WaveTime2());
@@ -332,7 +363,7 @@ public class GameController : MonoBehaviour
 
     private void Death()
     {
-        Destroy(player);
+        //GameObject.Destroy(player);
         Dead = true;
     }
 
@@ -383,5 +414,32 @@ public class GameController : MonoBehaviour
 
         new_sprite.transform.localPosition = pos;
         new_sprite.transform.localScale = new Vector3(5, 5, 0);
+    }
+    public void Reset()
+    {
+        Dead = true;
+        if (currentBoard != null)
+        {
+            Destroy(GameObject.FindGameObjectWithTag("Grid"));
+        }
+        if (player  != null)
+        {
+            Destroy(player);
+        }
+        if (enemy != null)
+        {
+            Destroy(enemy);
+        }
+        foreach (GameObject g in FindObjectsOfType<GameObject>())
+        {
+            if (g.name.Contains("Shuriken") || g.name.Contains("X"))
+            {
+                GameObject.Destroy(g);
+            }
+        }
+        Instantiate(Resources.Load("Grid"));
+        Instantiate(Resources.Load("Player"));
+        Instantiate(Resources.Load("ShurikenSpawner"));
+        Dead = false;
     }
 }

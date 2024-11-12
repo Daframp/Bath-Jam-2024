@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (rb == null)
         {
@@ -186,6 +186,8 @@ public class PlayerController : MonoBehaviour
     public void FellOffBoard()
     {
         transform.position = Vector2.zero;
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.velocity = Vector2.zero;
         PlayerHit();
     }
 
@@ -214,5 +216,21 @@ public class PlayerController : MonoBehaviour
                rb.velocity = new Vector2(-1*x,  y);
             }
         }
+    }
+    public void Reset()
+    {
+        health = 3;
+        friction = 1f;
+        shotCooldown = 0.5f;
+        shotDamage = 1f;
+        reloading = false;
+        recoilStrength = 5f;
+        bulletSpeed = 10f;
+        piercing = false;
+        shotgun = false;
+        SelectedItem = "";
+        transform.localScale = Vector3.zero;
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.MovePosition(Vector2.zero);
     }
 }

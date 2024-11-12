@@ -29,6 +29,7 @@ public class ShurikenSpawn : MonoBehaviour
     private int numberOfDirections;
     private int rnd;
     private List<int> enemies;
+    private float spawnerOffSet;
 
 
     // Start is called before the first frame update
@@ -44,7 +45,7 @@ public class ShurikenSpawn : MonoBehaviour
 
         //Spawn();
     }
-    private void Spawn(int shurikenVariant)
+    private void Spawn(int shurikenVariant, int waveNumber, bool invincible , float displacement)
     {
         if (shurikenVariant == 0)
         {
@@ -56,27 +57,36 @@ public class ShurikenSpawn : MonoBehaviour
         else if (shurikenVariant == 4) { shuriken = Instantiate(Resources.Load("Shuriken4") as GameObject, transform.position, transform.rotation); }
 
         Rigidbody2D rigidbody = shuriken.GetComponent<Rigidbody2D>();
-        if (transform.position.x <= -5.5)
+        if (transform.position.x <= -displacement)
         {
             //make direction to the right
             rigidbody.velocity = _shurikenSpeed * Vector2.right;
         }
-        else if (transform.position.x >= 5.5)
+        else if (transform.position.x >= displacement)
         {
             //make direction to left
             rigidbody.velocity = _shurikenSpeed * Vector2.left;
 
         }
-        else if (transform.position.y >= 5.5)
+        else if (transform.position.y >= displacement)
         {
             //make direction downwards
             rigidbody.velocity = _shurikenSpeed * Vector2.down; ;
         }
-        else if (transform.position.y <= -5.5)
+        else if (transform.position.y <= -displacement)
         {
             //make direction upwards
             rigidbody.velocity = _shurikenSpeed * Vector2.up;
         }
+        if (invincible) { shuriken.GetComponent<Shuriken>().Health(1000); }
+        else if (waveNumber >= 7)
+        {
+            if (UnityEngine.Random.Range(1,101) <= waveNumber) { shuriken.GetComponent<Shuriken>().Health(1); }
+            else { shuriken.GetComponent<Shuriken>().Health(1); }
+        }
+
+        else { shuriken.GetComponent<Shuriken>().Health(1); }
+        
 
     }
     public List<int> ShuffleListWithOrderBy(List<int> list)
@@ -84,16 +94,17 @@ public class ShurikenSpawn : MonoBehaviour
         System.Random random = new System.Random();
         return list.OrderBy(x => random.Next()).ToList();
     }
-    public void NextWave(int waveNumber, bool dodgeMode)
+    public void NextWave(int waveNumber, bool dodgeMode, int boardWidth)
     {
-        x = (20 * ((float)waveNumber / (float)(waveNumber + 10))) + 5 + UnityEngine.Random.Range(-3,4);
+        x = (8 * ((float)waveNumber / (float)(waveNumber + 15))) + 5 + UnityEngine.Random.Range(-3,4);
         numberOfEnemies = (int)Math.Round(x);
         rnd = UnityEngine.Random.Range(1, 40);
         numberOfDirections = 3;
+        spawnerOffSet = (boardWidth / 2) + 0.5f;
 
 
 
-        if (numberOfEnemies >= 20)
+        if (numberOfEnemies >= 15)
         {
             if (rnd <= waveNumber + 10)
             {
@@ -110,7 +121,7 @@ public class ShurikenSpawn : MonoBehaviour
             {
                 numberOfDirections = 4;
             }
-            else if (rnd <= waveNumber + 12)
+            else if (rnd <= waveNumber + 10)
             {
                 numberOfDirections = 3;
             }
@@ -122,7 +133,7 @@ public class ShurikenSpawn : MonoBehaviour
         }
         else 
         {
-            if (rnd <= waveNumber + 4)
+            if (rnd <= waveNumber + 12)
             {
                 numberOfDirections = 2;
             }
@@ -131,23 +142,23 @@ public class ShurikenSpawn : MonoBehaviour
                 numberOfDirections = 1;
             }
         }
-        numberOfEmpty = (numberOfDirections * 10) - numberOfEnemies;
+        numberOfEmpty = (numberOfDirections * boardWidth) - numberOfEnemies;
 
         enemies = new List<int>();
         for (int i = 1; i < numberOfEnemies+1; i++)
         {
             rnd = UnityEngine.Random.Range(1, 101);
-            if (UnityEngine.Random.Range(0, 11) == 1)
+            if (rnd == 1)
             {
                 enemies.Add(4);
             }
-            else if (rnd <= 5+waveNumber)
-            {
-                enemies.Add(3);
-            }
-            else if (rnd <= 30+waveNumber)
+            else if (rnd <= 2+waveNumber)
             {
                 enemies.Add(2);
+            }
+            else if (rnd <= 15+waveNumber)
+            {
+                enemies.Add(3);
             }
             else 
             {
@@ -159,32 +170,54 @@ public class ShurikenSpawn : MonoBehaviour
             enemies.Add(0);
         }
         enemies = ShuffleListWithOrderBy(enemies);
-        transform.position = new Vector3(6, -6, 0.044f);
+        enemies = ShuffleListWithOrderBy(enemies);
+        enemies = ShuffleListWithOrderBy(enemies);
+        transform.position = new Vector3(spawnerOffSet, -spawnerOffSet, 0.044f);
+
+        if (dodgeMode) 
+        {
+            enemies.Clear();
+            rnd = UnityEngine.Random.Range(1, boardWidth - 3);
+            for (int i = 0;i < rnd;i++)
+            {
+                enemies.Add(1);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                enemies.Add(0);
+            }
+            for (int i = 0; i < boardWidth - 3 - rnd; i++) 
+            { 
+                enemies.Add(1);
+            }
+        }
+
+
         direction = "up";
         foreach (int i in enemies) 
         { 
         if (direction == "up") 
             { 
                 transform.Translate(new Vector2(0, 1)); 
-                if (transform.position.y == 6) {transform.Translate(new Vector2(-1, 0)); direction = "left"; }
+                if (transform.position.y == spawnerOffSet) {transform.Translate(new Vector2(-1, 0)); direction = "left"; }
             }
         else if (direction == "down") 
             {
                 transform.Translate(new Vector2(0, -1));
-                if (transform.position.x == -6) { transform.Translate(new Vector2(1, 0)); direction = "right"; }
+                if (transform.position.x == -spawnerOffSet) { transform.Translate(new Vector2(1, 0)); direction = "right"; }
 
             }
         else if (direction == "right") 
             {
                 transform.Translate(new Vector2(1, 0));
-                if (transform.position.x == 6) { transform.Translate(new Vector2(0, 1)); direction = "up"; }
+                if (transform.position.x == spawnerOffSet) { transform.Translate(new Vector2(0, 1)); direction = "up"; }
             }
         else if (direction == "left") 
             {
                 transform.Translate(new Vector2(-1, 0));
-                if (transform.position.x == -6) { transform.Translate(new Vector2(0, -1)); direction = "down"; }
+                if (transform.position.x == -spawnerOffSet) { transform.Translate(new Vector2(0, -1)); direction = "down"; }
             }
-            Spawn(i);
+            Spawn(i,waveNumber, dodgeMode, (boardWidth/2) + 0.5f);
         }
 
 
