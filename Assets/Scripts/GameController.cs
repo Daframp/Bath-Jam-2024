@@ -91,6 +91,7 @@ public class GameController : MonoBehaviour
             {
                 Start();
                 Dead = false;
+                GenExplosive();
                 return;   
             }
             if (player.GetComponent<PlayerController>().GetHealth() == 0)
@@ -273,7 +274,7 @@ public class GameController : MonoBehaviour
     private void GenAsteroid()
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
-        CreateSprite("X-Mark", "AsteroidLanding", new Vector3(UnityEngine.Random.Range(size[0], size[1]), UnityEngine.Random.Range(size[2], size[3])));
+        CreateSprite("X-Mark", "AsteroidLanding", new Vector3(UnityEngine.Random.Range(size[0]+1, size[1]+1), UnityEngine.Random.Range(size[2], size[3])));
     }
     private void GenExploded()
     {
@@ -300,7 +301,7 @@ public class GameController : MonoBehaviour
     private void GenExplosive()
     {
         int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
-        Instantiate(Resources.Load("Explosive") as GameObject);
+        Instantiate(Resources.Load("Explosive") as GameObject, new Vector3(UnityEngine.Random.Range(size[0] + 1, size[1] + 1), UnityEngine.Random.Range(size[2], size[3])), new Quaternion());
 
     }
 

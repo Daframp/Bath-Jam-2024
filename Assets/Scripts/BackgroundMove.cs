@@ -27,7 +27,7 @@ public class BackgroundMove : MonoBehaviour
             }
             else
             {
-                gameObject.transform.position -= new Vector3(6, 0);
+                gameObject.transform.position -= new Vector3((float)5.5, 0);
                 StartCoroutine(wait());
                 counter = 0;
             }

@@ -57,7 +57,7 @@ public class Expolsion : MonoBehaviour
                 }
             }
         }
-        GameObject particleInstance = Instantiate(explosionParticleEffect, transform.position, Quaternion.identity);
+        GameObject particleInstance = Instantiate(Resources.Load("explosionParticleEffect") as GameObject, transform.position, Quaternion.identity);
         float lifetime = particleInstance.GetComponent<ParticleSystem>().main.duration;
         Destroy(particleInstance, lifetime);
 
@@ -69,7 +69,7 @@ public class Expolsion : MonoBehaviour
             audioSource.Play();
 
             // Destroy the sound object after the clip has finished playing
-            Destroy(soundObject, explosionSound.length);
+            Destroy(soundObject); //, explosionSound.length This isnt working 
 
         Destroy(self);
     }
