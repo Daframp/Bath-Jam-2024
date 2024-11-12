@@ -6,12 +6,15 @@ public class Expolsion : MonoBehaviour
 {
     private Vector3 center;
     private float radius = 1;
+    [SerializeField] private GameObject explosionParticleEffect;
+    private AudioSource audioSource;
+    public AudioClip explosionSound;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
+
     private void Awake()
     {
         center = transform.position;
@@ -54,6 +57,20 @@ public class Expolsion : MonoBehaviour
                 }
             }
         }
+        GameObject particleInstance = Instantiate(explosionParticleEffect, transform.position, Quaternion.identity);
+        float lifetime = particleInstance.GetComponent<ParticleSystem>().main.duration;
+        Destroy(particleInstance, lifetime);
+
+        GameObject soundObject = new GameObject("DestroySound");
+            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+
+            // Configure the audio source
+            audioSource.clip = explosionSound;
+            audioSource.Play();
+
+            // Destroy the sound object after the clip has finished playing
+            Destroy(soundObject, explosionSound.length);
+
         Destroy(self);
     }
 }

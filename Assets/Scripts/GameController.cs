@@ -68,9 +68,7 @@ public class GameController : MonoBehaviour
         counter = 0;
         counter2 = 0;
 
-        //GenWall();
-
-        if (musicEnabled == false)
+        if (musicEnabled)
         {
             audioSource = GetComponent<AudioSource>();
             audioSource.PlayOneShot(battleMusic);
@@ -82,7 +80,6 @@ public class GameController : MonoBehaviour
 
         Dead = true;
         start = true;
-
     }
 
     void Update()
@@ -92,7 +89,6 @@ public class GameController : MonoBehaviour
             if (player == null)
             {
                 Start();
-                currentBoard.GetComponent<BoardControl>().VetoColor(Color.blue);
                 Dead = false;
                 return;   
             }
