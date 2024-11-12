@@ -108,6 +108,7 @@ public class GameController : MonoBehaviour
                     currentBoard.GetComponent<BoardControl>().NextStage();
                     currentBoard.GetComponent<BoardControl>().NextRound();
                     RunEffects(true);
+                    WaveTime();
                     ShopOpen = false;
                 }
             }
