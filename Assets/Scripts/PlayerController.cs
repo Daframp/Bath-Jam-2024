@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour
     }
     public void AddHealth()
     {
-        health++;
+        SetHealth(health + 1);
     }
 
     private IEnumerator iFrames()
