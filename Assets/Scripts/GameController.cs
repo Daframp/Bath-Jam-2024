@@ -87,11 +87,10 @@ public class GameController : MonoBehaviour
     {
         if (!Dead)
         {
-            if (player == null)
+            if (player == null || enemy == null)
             {
                 Start();
                 Dead = false;
-                GenExplosive();
                 return;   
             }
             if (player.GetComponent<PlayerController>().GetHealth() == 0)
