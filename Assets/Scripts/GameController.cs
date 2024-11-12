@@ -91,7 +91,6 @@ public class GameController : MonoBehaviour
             {
                 Start();
                 Dead = false;
-                //currentBoard.GetComponent<BoardControl>().VetoColor(Color.blue);
                 return;   
             }
             if (player.GetComponent<PlayerController>().GetHealth() == 0)
@@ -157,10 +156,6 @@ public class GameController : MonoBehaviour
     }
     private void RunEffects(bool weaponUpgrade = false)
     {
-        if (Effects.Contains("Health"))
-        {
-            player.GetComponent<PlayerController>().SetHealth((int) player.GetComponent<PlayerController>().GetHealth()+1);
-        }
         if (Effects.Contains("lessFriction"))
         {
             player.GetComponent<PlayerController>().SetFriction(player.GetComponent<PlayerController>().GetFriction()-1);
@@ -179,6 +174,10 @@ public class GameController : MonoBehaviour
         }
         if (weaponUpgrade)
         {
+            if (Effects.Contains("Heart"))
+            {
+                player.GetComponent<PlayerController>().AddHealth();
+            }
             if (Effects.Contains("Shotgun"))
             {
                 player.GetComponent<PlayerController>().GetShotgun();
