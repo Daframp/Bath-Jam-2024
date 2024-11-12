@@ -15,7 +15,8 @@ public class Shuriken : MonoBehaviour
 
     private Transform _player;
     private Vector2 directionToPlayer;
-    private float health = 1f;
+    [SerializeField]
+    public float health = 1f;
 
 
     private void Awake()
@@ -103,5 +104,9 @@ public class Shuriken : MonoBehaviour
         if (health <= 0){
             Destroy(gameObject);
         }
+    }
+    public void Health(float healthP)
+    {
+        health = healthP;
     }
 }
