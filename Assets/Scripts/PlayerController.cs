@@ -174,10 +174,10 @@ public class PlayerController : MonoBehaviour
     public void GetSniper()
     {
         audioSource.PlayOneShot(powerUpSound);
-        shotCooldown *= 2;
+        shotCooldown *= 1.5f;
         shotDamage *= 2;
         recoilStrength = System.Math.Min(recoilStrength * 1.5f, 8);
-        bulletSpeed *= 2;
+        bulletSpeed *= 3;
     }
 
     public void GetShotgun()
@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("SMG got");
         audioSource.PlayOneShot(powerUpSound);
         shotCooldown *= 0.2f;
-        shotDamage *= 0.2f;
+        shotDamage *= 0.3f;
         recoilStrength *= 0.2f;
     }
 

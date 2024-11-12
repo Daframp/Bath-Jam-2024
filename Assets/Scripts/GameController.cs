@@ -117,7 +117,7 @@ public class GameController : MonoBehaviour
                 UpdateInterval();
                 UpdateWave();
                 GameObject g = GameObject.FindGameObjectWithTag("Text");
-                g.GetComponent<TMP_Text>().text = "Score = " + counter.ToString();
+                g.GetComponent<TMP_Text>().text = "Score: " + counter.ToString();
             }
         }
         else
