@@ -101,7 +101,7 @@ public class ShurikenSpawn : MonoBehaviour
     }
     public void NextWave(int waveNumber, bool dodgeMode, int boardWidth)
     {
-        x = (8 * ((float)waveNumber / (float)(waveNumber + 15))) + 5 + UnityEngine.Random.Range(-3,4);
+        x = (8 * ((float)waveNumber / (float)(waveNumber + 15))) + 5 + UnityEngine.Random.Range(-3,1);
         numberOfEnemies = (int)Math.Round(x);
         rnd = UnityEngine.Random.Range(1, 40);
         numberOfDirections = 3;
