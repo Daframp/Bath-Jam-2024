@@ -23,7 +23,6 @@ public class BulletController : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Bullet hit an Enemy!");
             other.GetComponent<Shuriken>().enemyHit(damage);
             
             GameObject soundObject = new GameObject("DestroySound");
