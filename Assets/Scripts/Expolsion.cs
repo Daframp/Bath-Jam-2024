@@ -58,9 +58,9 @@ public class Expolsion : MonoBehaviour
                 }
             }
         }
-        // GameObject particleInstance = Instantiate(Resources.Load("explosionParticleEffect") as GameObject, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity);
-        // float lifetime = particleInstance.GetComponent<ParticleSystem>().main.duration;
-        // Destroy(particleInstance, lifetime);
+        GameObject particleInstance = Instantiate(Resources.Load("explosionParticleEffect") as GameObject, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity);
+        float lifetime = particleInstance.GetComponent<ParticleSystem>().main.duration;
+        Destroy(particleInstance, lifetime);
 
 
         Debug.Log(explosionSound);
