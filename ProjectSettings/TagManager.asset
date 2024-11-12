@@ -19,7 +19,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Particles
   - 
   - 
   - 
@@ -51,4 +51,7 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Particles
+    uniqueID: 1606480601
     locked: 0
