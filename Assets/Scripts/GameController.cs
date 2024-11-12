@@ -43,9 +43,14 @@ public class GameController : MonoBehaviour
     private bool Dead = false;
     public bool musicEnabled;
     private bool start = false;
+    private GameObject b ;
 
     void Start()
     {
+        if (b == null)
+        {
+            b = GameObject.Find("Button");
+        }
         currentBoard = FindObjectOfType<Grid>();
         GameObject[] temp = FindObjectsOfType(typeof(GameObject)) as GameObject[];
         foreach (GameObject go in temp)
@@ -62,8 +67,6 @@ public class GameController : MonoBehaviour
         difficulty = 0;
         counter = 0;
         counter2 = 0;
-
-        GenExplosive();
 
         if (musicEnabled)
         {
@@ -363,7 +366,8 @@ public class GameController : MonoBehaviour
 
     private void Death()
     {
-        //GameObject.Destroy(player);
+        b.gameObject.SetActive(true);
+        GameObject.Destroy(player);
         Dead = true;
     }
 
@@ -441,5 +445,7 @@ public class GameController : MonoBehaviour
         Instantiate(Resources.Load("Player"));
         Instantiate(Resources.Load("ShurikenSpawner"));
         Dead = false;
+
+        b.gameObject.SetActive(false);
     }
 }
