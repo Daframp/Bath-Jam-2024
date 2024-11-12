@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(iFramesLength);
         invincible = false;
     }
-    public float GetHealth()
+    public int GetHealth()
     {
         return health;
     }

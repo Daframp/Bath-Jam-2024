@@ -220,7 +220,6 @@ public class GameController : MonoBehaviour
         {
             GenExplosive(); 
         }
-
     }
 
     private void DeRunEffects()

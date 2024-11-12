@@ -313,7 +313,6 @@ public class BoardControl : MonoBehaviour
 
     public void DecreaseSize()
     {
-        Debug.Log(tilemaps[0].cellBounds.xMin);
         foreach (var tilemap in tilemaps)
         {
             RemoveTiles(tilemap);
@@ -397,7 +396,6 @@ public class BoardControl : MonoBehaviour
         {
             if (c2 == c)
             {
-                Debug.Log(c2);
             }
         }
     }
