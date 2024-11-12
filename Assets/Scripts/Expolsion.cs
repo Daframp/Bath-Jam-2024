@@ -69,7 +69,7 @@ public class Expolsion : MonoBehaviour
             audioSource.Play();
 
             // Destroy the sound object after the clip has finished playing
-            Destroy(soundObject); //, explosionSound.length This isnt working 
+            Destroy(soundObject, explosionSound.length); //, explosionSound.length This isnt working 
 
         Destroy(self);
     }
