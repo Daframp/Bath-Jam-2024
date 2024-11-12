@@ -108,8 +108,9 @@ public class GameController : MonoBehaviour
                     currentBoard.GetComponent<BoardControl>().NextStage();
                     currentBoard.GetComponent<BoardControl>().NextRound();
                     RunEffects(true);
-                    WaveTime();
                     ShopOpen = false;
+                    RemoveGO("Wall");
+                    WaveTime();
                 }
             }
             else
@@ -118,7 +119,7 @@ public class GameController : MonoBehaviour
                 UpdateInterval();
                 UpdateWave();
                 GameObject g = GameObject.FindGameObjectWithTag("Text");
-                g.GetComponent<TMP_Text>().text = "Score: " + counter.ToString();
+                g.GetComponent<TMP_Text>().text = "Score = " + counter.ToString();
             }
         }
         else
@@ -297,6 +298,20 @@ public class GameController : MonoBehaviour
         g[0].GetComponent<Expolsion>().Start();
         g[0].GetComponent<Expolsion>().Explode();
     }
+    private void GenWalls()
+    {
+        int[] size = currentBoard.GetComponent<BoardControl>().GetSize();
+        for (int i = size[0]+1; i < Math.Abs(size[0] - size[1]) -3 ; i++)
+        {
+            GenWall(i, size[2]-1);
+            GenWall(i, size[3]+1);
+        }
+        for (int i = size[2]; i < Math.Abs(size[0] - size[1])-3; i++)
+        {
+            GenWall(size[0]+1,i);
+            GenWall(size[1]+3,i);
+        }
+    }
 
     private void GenWall(int x = 1000, int y = 1000)
     {
@@ -339,6 +354,7 @@ public class GameController : MonoBehaviour
                         ShopOpen = true;
                         DeRunEffects(true);
                         currentBoard.GetComponent<BoardControl>().Shop();
+                        GenWalls();
                     }
                     if (counter % 10 == 0)
                     {

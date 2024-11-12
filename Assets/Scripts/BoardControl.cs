@@ -188,7 +188,7 @@ public class BoardControl : MonoBehaviour
         {
             CurrentColors[0] = Color.blue;
             CurrentColors[1] = Color.blue;
-            
+
             while (CurrentColors[0] == CurrentColors[1])
             {
                 CurrentColors[0] = GetColor();
@@ -399,19 +399,12 @@ public class BoardControl : MonoBehaviour
     {
         colors.Remove(c);
         colors.Add(Color.black);
-        foreach (Color c2 in colors)
-        {
-            if (c2 == c)
-            {
-                Debug.Log(c2);
-            }
-        }
     }
 
     public void AddColor(Color c)
     {
         colors.Add(c);
-        colors.Remove(Color.white);
+        colors.Remove(Color.black);
     }
 
     public int[] GetSize()
