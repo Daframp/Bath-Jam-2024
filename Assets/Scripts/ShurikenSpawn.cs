@@ -51,6 +51,11 @@ public class ShurikenSpawn : MonoBehaviour
         {
             return;
         }
+        if (invincible) { _shurikenSpeed = 4; }
+        else { _shurikenSpeed = 2; }
+
+        
+
         if (shurikenVariant == 1) { shuriken = Instantiate(Resources.Load("Shuriken") as GameObject, transform.position, transform.rotation); }
         else if (shurikenVariant == 2) { shuriken = Instantiate(Resources.Load("Shuriken2") as GameObject, transform.position, transform.rotation); }
         else if (shurikenVariant == 3) { shuriken = Instantiate(Resources.Load("Shuriken3") as GameObject, transform.position, transform.rotation); }
