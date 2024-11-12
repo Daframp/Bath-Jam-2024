@@ -147,8 +147,7 @@ public class PlayerController : MonoBehaviour
     }
     public void AddHealth()
     {
-        health++;
-        transform.Find("Canvas").Find("HealthText").GetComponent<TextMeshProUGUI>().SetText(health.ToString());
+        SetHealth(health+1);
     }
 
     private IEnumerator iFrames()
