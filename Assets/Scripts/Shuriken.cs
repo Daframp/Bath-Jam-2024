@@ -52,6 +52,10 @@ public class Shuriken : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (rigidbody.velocity.magnitude == 0)
+        {
+            Destroy(gameObject);
+        }
 
         if (Mathf.Abs(transform.position.x) >= 10 || Mathf.Abs(transform.position.y) >= 10)
         {
@@ -113,4 +117,6 @@ public class Shuriken : MonoBehaviour
     {
         health = healthP;
     }
+
+    
 }
