@@ -29,7 +29,7 @@ public class ShurikenSpawn : MonoBehaviour
     private int numberOfDirections;
     private int rnd;
     private List<int> enemies;
-    private int spawnerOffSet;
+    private float spawnerOffSet;
 
 
     // Start is called before the first frame update
@@ -45,7 +45,7 @@ public class ShurikenSpawn : MonoBehaviour
 
         //Spawn();
     }
-    private void Spawn(int shurikenVariant, int waveNumber, bool invincible)
+    private void Spawn(int shurikenVariant, int waveNumber, bool invincible , float displacement)
     {
         if (shurikenVariant == 0)
         {
@@ -57,23 +57,23 @@ public class ShurikenSpawn : MonoBehaviour
         else if (shurikenVariant == 4) { shuriken = Instantiate(Resources.Load("Shuriken4") as GameObject, transform.position, transform.rotation); }
 
         Rigidbody2D rigidbody = shuriken.GetComponent<Rigidbody2D>();
-        if (transform.position.x <= -5.5)
+        if (transform.position.x <= -displacement)
         {
             //make direction to the right
             rigidbody.velocity = _shurikenSpeed * Vector2.right;
         }
-        else if (transform.position.x >= 5.5)
+        else if (transform.position.x >= displacement)
         {
             //make direction to left
             rigidbody.velocity = _shurikenSpeed * Vector2.left;
 
         }
-        else if (transform.position.y >= 5.5)
+        else if (transform.position.y >= displacement)
         {
             //make direction downwards
             rigidbody.velocity = _shurikenSpeed * Vector2.down; ;
         }
-        else if (transform.position.y <= -5.5)
+        else if (transform.position.y <= -displacement)
         {
             //make direction upwards
             rigidbody.velocity = _shurikenSpeed * Vector2.up;
@@ -100,7 +100,7 @@ public class ShurikenSpawn : MonoBehaviour
         numberOfEnemies = (int)Math.Round(x);
         rnd = UnityEngine.Random.Range(1, 40);
         numberOfDirections = 3;
-        spawnerOffSet = (boardWidth / 2) + 1;
+        spawnerOffSet = (boardWidth / 2) + 0.5f;
 
 
 
@@ -217,7 +217,7 @@ public class ShurikenSpawn : MonoBehaviour
                 transform.Translate(new Vector2(-1, 0));
                 if (transform.position.x == -spawnerOffSet) { transform.Translate(new Vector2(0, -1)); direction = "down"; }
             }
-            Spawn(i,waveNumber,false);
+            Spawn(i,waveNumber,false , (boardWidth/2) + 0.5f);
         }
 
 
